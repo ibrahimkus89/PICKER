@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
     {
         if (PickerMoveSituation)
         {
-            PickerObj.transform.position += 4f * Time.deltaTime * PickerObj.transform.forward;
+            PickerObj.transform.position += 5f * Time.deltaTime * PickerObj.transform.forward;
 
             if (Time.timeScale!=0)
             {
@@ -34,5 +35,12 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    public void BorderReach()
+    {
+        PickerMoveSituation=false;
+        Debug.Log("here");
     }
 }

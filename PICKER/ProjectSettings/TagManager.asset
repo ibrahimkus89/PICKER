@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - PickerBorderObj
+  - CountBall
   layers:
   - Default
   - TransparentFX
