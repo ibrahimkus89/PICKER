@@ -23,11 +23,19 @@ public class GameManager : MonoBehaviour
      public  bool PickerMoveSituation;
 
     private int AtlBallNumber;
+    private int totalNumberOfCheckpoint;
+    private int mevCheckpointIndex;
     [SerializeField] private List<BallFieldProcess> _BallFieldProcess =new List<BallFieldProcess>();
     void Start()
     {
         PickerMoveSituation = true;
-        _BallFieldProcess[0].numberText.text = AtlBallNumber + "/" + _BallFieldProcess[0].AgBall;
+        for (int i = 0; i <_BallFieldProcess.Count; i++)
+        {
+            _BallFieldProcess[i].numberText.text = AtlBallNumber + "/" + _BallFieldProcess[i].AgBall;
+        }
+        
+          totalNumberOfCheckpoint = _BallFieldProcess.Count-1;
+       
     }
 
     
@@ -76,30 +84,38 @@ public class GameManager : MonoBehaviour
     public void BallCount()
     {
         AtlBallNumber++;
-        _BallFieldProcess[0].numberText.text = AtlBallNumber + "/" + _BallFieldProcess[0].AgBall;
+        _BallFieldProcess[mevCheckpointIndex].numberText.text = AtlBallNumber + "/" + _BallFieldProcess[mevCheckpointIndex].AgBall;
 
     }
 
     void StageControl()
     {
-        if (AtlBallNumber >= _BallFieldProcess[0].AgBall)
+        if (AtlBallNumber >= _BallFieldProcess[mevCheckpointIndex].AgBall)
         {
-            Debug.Log("Win");
-            _BallFieldProcess[0].BallFieldAnimator.Play("Lift");
-            foreach (var item in _BallFieldProcess[0].Balls)
+            _BallFieldProcess[mevCheckpointIndex].BallFieldAnimator.Play("Lift");
+            foreach (var item in _BallFieldProcess[mevCheckpointIndex].Balls)
             {
                 item.SetActive(false);
             }
+
+            if (mevCheckpointIndex==totalNumberOfCheckpoint)
+            {
+                Debug.Log("Game Over");// win panel
+                Time.timeScale = 0;
+            }
+            else
+            {
+                mevCheckpointIndex++;
+                AtlBallNumber = 0;
+
+            }
+
         }
         else
         {
-            Debug.Log("Lost");
+            Debug.Log("Lost");// lost panel
         }
     }
 
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireCube(BallControlObj.transform.position,BallControlObj.transform.localScale);
-    //}
+    
 }
