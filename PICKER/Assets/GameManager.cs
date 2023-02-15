@@ -13,13 +13,14 @@ public class BallFieldProcess
     public Animator BallFieldAnimator;
     public TextMeshProUGUI numberText;
     public int AgBall;
+    public GameObject[] Balls;
 }
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject PickerObj;
     [SerializeField] private GameObject BallControlObj;
-    [SerializeField] private bool PickerMoveSituation;
+     public  bool PickerMoveSituation;
 
     private int AtlBallNumber;
     [SerializeField] private List<BallFieldProcess> _BallFieldProcess =new List<BallFieldProcess>();
@@ -56,7 +57,7 @@ public class GameManager : MonoBehaviour
     public void BorderReach()
     {
         PickerMoveSituation=false;
-
+        Invoke("StageControl",2f);
         Collider[] hitCol = Physics.OverlapBox(BallControlObj.transform.position,BallControlObj.transform.localScale / 2,Quaternion.identity);
 
         int i = 0;
@@ -69,6 +70,31 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log(i);
+    }
+
+
+    public void BallCount()
+    {
+        AtlBallNumber++;
+        _BallFieldProcess[0].numberText.text = AtlBallNumber + "/" + _BallFieldProcess[0].AgBall;
+
+    }
+
+    void StageControl()
+    {
+        if (AtlBallNumber >= _BallFieldProcess[0].AgBall)
+        {
+            Debug.Log("Win");
+            _BallFieldProcess[0].BallFieldAnimator.Play("Lift");
+            foreach (var item in _BallFieldProcess[0].Balls)
+            {
+                item.SetActive(false);
+            }
+        }
+        else
+        {
+            Debug.Log("Lost");
+        }
     }
 
     //void OnDrawGizmos()
