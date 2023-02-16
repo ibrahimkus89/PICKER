@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 [Serializable]
 
@@ -19,6 +20,8 @@ public class BallFieldProcess
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject PickerObj;
+    [SerializeField] private GameObject[] PickerPalets;
+    private bool AreTherePallets;
     [SerializeField] private GameObject BallControlObj;
      public  bool PickerMoveSituation;
 
@@ -64,6 +67,12 @@ public class GameManager : MonoBehaviour
 
     public void BorderReach()
     {
+        if (AreTherePallets)
+        {
+            PickerPalets[0].SetActive(false);
+            PickerPalets[1].SetActive(false);
+        }
+
         PickerMoveSituation=false;
         Invoke("StageControl",2f);
         Collider[] hitCol = Physics.OverlapBox(BallControlObj.transform.position,BallControlObj.transform.localScale / 2,Quaternion.identity);
@@ -107,7 +116,11 @@ public class GameManager : MonoBehaviour
             {
                 mevCheckpointIndex++;
                 AtlBallNumber = 0;
-
+                if (AreTherePallets)
+                {
+                    PickerPalets[0].SetActive(true);
+                    PickerPalets[1].SetActive(true);
+                }
             }
 
         }
@@ -117,5 +130,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+
+    public void RevealThePalettes()
+    {
+        AreTherePallets =true;
+        PickerPalets[0].SetActive(true);
+        PickerPalets[1].SetActive(true);
+
+
+
+    }
+
+
+
 }
