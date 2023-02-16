@@ -6,13 +6,27 @@ using UnityEngine;
 public class Ballitem : MonoBehaviour
 {
     [SerializeField] private GameManager _gameManager;
-    
+    [SerializeField] private string ItemType;
+    [SerializeField] private int BonusBallIndex;
+
+
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PickerBorderObj"))
         {
-            _gameManager.RevealThePalettes();
-            gameObject.SetActive(false);
+            if (ItemType=="Palet")
+            {
+                _gameManager.RevealThePalettes();
+                gameObject.SetActive(false);
+            }
+           else 
+            {
+                _gameManager.BonusBallAdd(BonusBallIndex);
+                gameObject.SetActive(false);
+            }
+
+
         }
     }
 }

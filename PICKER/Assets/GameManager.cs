@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject PickerObj;
     [SerializeField] private GameObject[] PickerPalets;
+    [SerializeField] private GameObject[] BonusBalls;
+
     private bool AreTherePallets;
     [SerializeField] private GameObject BallControlObj;
      public  bool PickerMoveSituation;
@@ -136,11 +138,11 @@ public class GameManager : MonoBehaviour
         AreTherePallets =true;
         PickerPalets[0].SetActive(true);
         PickerPalets[1].SetActive(true);
-
-
-
     }
 
-
+    public void BonusBallAdd(int BonusBallIndex)
+    {
+        BonusBalls[BonusBallIndex].SetActive(true);
+    }
 
 }
