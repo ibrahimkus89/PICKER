@@ -6,6 +6,7 @@ using System;
 using TMPro;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 
@@ -19,13 +20,20 @@ public class BallFieldProcess
 
 public class GameManager : MonoBehaviour
 {
+    [Header("----BALL MANAGEMENT")]
     [SerializeField] private GameObject PickerObj;
     [SerializeField] private GameObject[] PickerPalets;
     [SerializeField] private GameObject[] BonusBalls;
-
     private bool AreTherePallets;
     [SerializeField] private GameObject BallControlObj;
      public  bool PickerMoveSituation;
+
+     [Header("-----------SOUNDS")] [SerializeField]
+     private AudioSource[] Sounds;
+
+     
+     [Header("--------PANELS")]
+     [SerializeField] private GameObject[] Panels;
 
     private int AtlBallNumber;
     private int totalNumberOfCheckpoint;
@@ -108,10 +116,12 @@ public class GameManager : MonoBehaviour
             {
                 item.SetActive(false);
             }
+            Sounds[0].Play();
 
             if (mevCheckpointIndex==totalNumberOfCheckpoint)
             {
-                Debug.Log("Game Over");// win panel
+                Sounds[3].Play();
+                Panels[1].SetActive(true);
                 Time.timeScale = 0;
             }
             else
@@ -128,13 +138,15 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Lost");// lost panel
+            Sounds[2].Play();
+            Panels[2].SetActive(true);
         }
     }
 
 
     public void RevealThePalettes()
     {
+        Sounds[1].Play();
         AreTherePallets =true;
         PickerPalets[0].SetActive(true);
         PickerPalets[1].SetActive(true);
@@ -142,7 +154,36 @@ public class GameManager : MonoBehaviour
 
     public void BonusBallAdd(int BonusBallIndex)
     {
+        Sounds[1].Play();
         BonusBalls[BonusBallIndex].SetActive(true);
     }
 
+    public void ButtonProcess(string process)
+    {
+        switch (process)
+        {
+            case "Pause": 
+                Panels[0].SetActive(true);
+                Time.timeScale = 0;
+                break;
+            case "Resume":
+                Panels[0].SetActive(false);
+                Time.timeScale = 1;
+                break;
+            case "Retry":
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                Time.timeScale = 1;
+                break;
+            case "Next":
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                Time.timeScale = 1;
+                break;
+            case "Settings":
+                // you can make a settings panel
+            break;
+            case "Quit":
+                Application.Quit();
+                break;
+        }
+    }
 }
