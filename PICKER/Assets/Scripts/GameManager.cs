@@ -123,6 +123,7 @@ public class GameManager : MonoBehaviour
                 Sounds[3].Play();
                 Panels[1].SetActive(true);
                 Time.timeScale = 0;
+                PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level") + 1);
             }
             else
             {
