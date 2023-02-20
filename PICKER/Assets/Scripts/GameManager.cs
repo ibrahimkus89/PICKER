@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     private int totalNumberOfCheckpoint;
     private int mevCheckpointIndex;
     [SerializeField] private List<BallFieldProcess> _BallFieldProcess =new List<BallFieldProcess>();
+    private float fingerPosX;
     void Start()
     {
         PickerMoveSituation = true;
@@ -60,16 +61,36 @@ public class GameManager : MonoBehaviour
 
             if (Time.timeScale!=0)
             {
-                if (Input.GetKey(KeyCode.LeftArrow))
+                if (Input.touchCount>0)
                 {
-                    PickerObj.transform.position = Vector3.Lerp(PickerObj.transform.position,
-                        new Vector3(PickerObj.transform.position.x -.1f,PickerObj.transform.position.y,PickerObj.transform.position.z),.05f);
+                    Touch touch=Input.GetTouch(0);
+                    Vector3 TouchPosition = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x,touch.position.y,10f));
+                    switch (touch.phase)
+                    {
+                        case TouchPhase.Began:
+                            fingerPosX = TouchPosition.x - PickerObj.transform.position.x;
+                            break;
+                        case TouchPhase.Moved:
+
+                            if (TouchPosition.x - fingerPosX > -1.15 && TouchPosition.x - fingerPosX < 1.15)
+                            {
+                                PickerObj.transform.position=Vector3.Lerp(PickerObj.transform.position,
+                                    new Vector3(TouchPosition.x - fingerPosX,PickerObj.transform.position.y,PickerObj.transform.position.z),3f);
+                            }
+                            break;
+                    }
                 }
-                if (Input.GetKey(KeyCode.RightArrow))
-                {
-                    PickerObj.transform.position = Vector3.Lerp(PickerObj.transform.position,
-                        new Vector3(PickerObj.transform.position.x  +.1f, PickerObj.transform.position.y, PickerObj.transform.position.z),.05f);
-                }
+
+                //if (Input.GetKey(KeyCode.LeftArrow))
+                //{
+                //    PickerObj.transform.position = Vector3.Lerp(PickerObj.transform.position,
+                //        new Vector3(PickerObj.transform.position.x -.1f,PickerObj.transform.position.y,PickerObj.transform.position.z),.05f);
+                //}
+                //if (Input.GetKey(KeyCode.RightArrow))
+                //{
+                //    PickerObj.transform.position = Vector3.Lerp(PickerObj.transform.position,
+                //        new Vector3(PickerObj.transform.position.x  +.1f, PickerObj.transform.position.y, PickerObj.transform.position.z),.05f);
+                //}
             }
         }
     }
